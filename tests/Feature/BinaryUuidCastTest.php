@@ -2,9 +2,6 @@
 
 use App\Casts\BinaryUuidCast;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function () {
     $this->cast = new BinaryUuidCast;
