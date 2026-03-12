@@ -10,12 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('combo_table', function (Blueprint $table) {
-            $table->id();
+        Schema::create('uuid_only', function (Blueprint $table) {
             $table->binary('uuid', 16)->unique();
             $table->timestamps();
         });
-
     }
 
     /**
@@ -23,6 +21,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('combo_table');
+        Schema::dropIfExists('uuid_only');
     }
 };
