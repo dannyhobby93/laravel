@@ -8,6 +8,7 @@ use Database\Factories\UuidOnlyFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class UuidOnly extends Model
 {
@@ -40,8 +41,13 @@ class UuidOnly extends Model
      */
     protected function setKeysForSaveQuery($query)
     {
+        $key = $this->getKey();
         $raw = $this->getRawOriginal($this->getKeyName())
-            ?? hex2bin(str_replace('-', '', $this->getKey()));
+            ?? (Str::isUuid($key) ? hex2bin(str_replace('-', '', $key)) : null);
+
+        if ($raw === null) {
+            throw new \RuntimeException("Cannot build save query: primary key [{$key}] is not a valid UUID.");
+        }
 
         return $query->where($this->getKeyName(), $raw);
     }
