@@ -33,19 +33,23 @@ trait HasBinaryUuidColumn
      */
     public function resolveRouteBinding(mixed $value, ?string $field = null): ?static
     {
-        if (! Str::isUuid($value)) {
-            return null;
-        }
-
         $column = $field ?? $this->uuidColumn();
 
-        return $this->where($column, hex2bin(str_replace('-', '', $value)))->first();
+        if ($column === $this->uuidColumn()) {
+            if (! Str::isUuid($value)) {
+                return null;
+            }
+
+            return $this->where($column, hex2bin(str_replace('-', '', $value)))->first();
+        }
+
+        return $this->where($column, $value)->first();
     }
 
     /**
      * The route key is always the string UUID representation.
      */
-    public function getRouteKey(): string
+    public function getRouteKey(): ?string
     {
         return $this->{$this->uuidColumn()};
     }

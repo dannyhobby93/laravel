@@ -4,6 +4,7 @@ namespace App\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class BinaryUuidCast implements CastsAttributes
 {
@@ -35,6 +36,10 @@ class BinaryUuidCast implements CastsAttributes
     {
         if ($value === null) {
             return null;
+        }
+
+        if (! Str::isUuid($value)) {
+            throw new \InvalidArgumentException("Invalid UUID value: [{$value}]");
         }
 
         return hex2bin(str_replace('-', '', $value));
