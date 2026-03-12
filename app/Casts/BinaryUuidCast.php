@@ -16,7 +16,7 @@ class BinaryUuidCast implements CastsAttributes
             return null;
         }
 
-        $hex = strlen($value) === 16 ? bin2hex($value) : str_replace('-', '', $value);
+        $hex = bin2hex($value);
 
         return sprintf(
             '%s-%s-%s-%s-%s',

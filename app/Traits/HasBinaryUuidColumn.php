@@ -33,6 +33,10 @@ trait HasBinaryUuidColumn
      */
     public function resolveRouteBinding(mixed $value, ?string $field = null): ?static
     {
+        if (! Str::isUuid($value)) {
+            return null;
+        }
+
         $column = $field ?? $this->uuidColumn();
 
         return $this->where($column, hex2bin(str_replace('-', '', $value)))->first();
