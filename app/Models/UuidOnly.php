@@ -40,7 +40,10 @@ class UuidOnly extends Model
      */
     protected function setKeysForSaveQuery($query)
     {
-        return $query->where($this->getKeyName(), $this->getRawOriginal($this->getKeyName()));
+        $raw = $this->getRawOriginal($this->getKeyName())
+            ?? hex2bin(str_replace('-', '', $this->getKey()));
+
+        return $query->where($this->getKeyName(), $raw);
     }
 
     /**

@@ -17,6 +17,10 @@ class BinaryUuidCast implements CastsAttributes
             return null;
         }
 
+        if (strlen($value) === 36 && Str::isUuid($value)) {
+            return $value;
+        }
+
         if (strlen($value) !== 16) {
             throw new \InvalidArgumentException('Expected 16-byte binary UUID, got '.strlen($value).' bytes.');
         }

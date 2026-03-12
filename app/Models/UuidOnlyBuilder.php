@@ -22,6 +22,15 @@ class UuidOnlyBuilder extends Builder
      */
     public function find($id, $columns = ['*'])
     {
+        if (is_array($id)) {
+            $id = array_map(
+                fn ($v) => is_string($v) && Str::isUuid($v) ? hex2bin(str_replace('-', '', $v)) : $v,
+                $id,
+            );
+
+            return parent::find($id, $columns);
+        }
+
         if (is_string($id) && Str::isUuid($id)) {
             $id = hex2bin(str_replace('-', '', $id));
         }

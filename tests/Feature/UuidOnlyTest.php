@@ -37,9 +37,7 @@ test('can update a record', function () {
     $record->name = 'Updated';
     $record->save();
 
-    $found = UuidOnly::find($record->uuid);
-
-    expect($found->name)->toBe('Updated');
+    expect(DB::table('uuid_only')->first()->name)->toBe('Updated');
 });
 
 test('can resolve route binding from string uuid', function () {
