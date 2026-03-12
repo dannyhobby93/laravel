@@ -17,7 +17,7 @@ class ComboTable extends Model
 
     public $incrementing = true;
 
-    protected $fillable = ['name', 'uuid'];
+    protected $fillable = ['name'];
 
     protected function casts(): array
     {

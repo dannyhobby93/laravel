@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UuidOnly;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UuidOnlyController extends Controller
 {
@@ -32,7 +33,7 @@ class UuidOnlyController extends Controller
     public function update(Request $request, UuidOnly $uuidOnly): JsonResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
         ]);
 
         $uuidOnly->update($validated);
@@ -40,10 +41,10 @@ class UuidOnlyController extends Controller
         return response()->json($uuidOnly);
     }
 
-    public function destroy(UuidOnly $uuidOnly): JsonResponse
+    public function destroy(UuidOnly $uuidOnly): Response
     {
         $uuidOnly->delete();
 
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }

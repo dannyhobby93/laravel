@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ComboTable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ComboTableController extends Controller
 {
@@ -32,7 +33,7 @@ class ComboTableController extends Controller
     public function update(Request $request, ComboTable $comboTable): JsonResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
         ]);
 
         $comboTable->update($validated);
@@ -40,10 +41,10 @@ class ComboTableController extends Controller
         return response()->json($comboTable);
     }
 
-    public function destroy(ComboTable $comboTable): JsonResponse
+    public function destroy(ComboTable $comboTable): Response
     {
         $comboTable->delete();
 
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }

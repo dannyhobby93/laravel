@@ -23,7 +23,7 @@ class UuidOnly extends Model
 
     protected $keyType = 'string';
 
-    protected $fillable = ['name', 'uuid'];
+    protected $fillable = ['name'];
 
     protected function casts(): array
     {
