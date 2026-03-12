@@ -31,7 +31,7 @@ trait HasBinaryUuidColumn
     /**
      * Resolve route model binding by converting the string UUID to binary.
      */
-    public function resolveRouteBinding(mixed $value, ?string $field = null): ?static
+    public function resolveRouteBinding($value, $field = null): ?static
     {
         $column = $field ?? $this->uuidColumn();
 
