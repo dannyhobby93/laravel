@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreComboTableRequest;
+use App\Http\Requests\UpdateComboTableRequest;
 use App\Models\ComboTable;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ComboTableController extends Controller
@@ -14,13 +15,9 @@ class ComboTableController extends Controller
         return response()->json(ComboTable::all());
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreComboTableRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
-
-        $record = ComboTable::create($validated);
+        $record = ComboTable::create($request->validated());
 
         return response()->json($record, 201);
     }
@@ -30,13 +27,9 @@ class ComboTableController extends Controller
         return response()->json($comboTable);
     }
 
-    public function update(Request $request, ComboTable $comboTable): JsonResponse
+    public function update(UpdateComboTableRequest $request, ComboTable $comboTable): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-        ]);
-
-        $comboTable->update($validated);
+        $comboTable->update($request->validated());
 
         return response()->json($comboTable);
     }

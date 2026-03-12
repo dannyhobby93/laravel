@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUuidOnlyRequest;
+use App\Http\Requests\UpdateUuidOnlyRequest;
 use App\Models\UuidOnly;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UuidOnlyController extends Controller
@@ -14,13 +15,9 @@ class UuidOnlyController extends Controller
         return response()->json(UuidOnly::all());
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreUuidOnlyRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
-
-        $record = UuidOnly::create($validated);
+        $record = UuidOnly::create($request->validated());
 
         return response()->json($record, 201);
     }
@@ -30,13 +27,9 @@ class UuidOnlyController extends Controller
         return response()->json($uuidOnly);
     }
 
-    public function update(Request $request, UuidOnly $uuidOnly): JsonResponse
+    public function update(UpdateUuidOnlyRequest $request, UuidOnly $uuidOnly): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-        ]);
-
-        $uuidOnly->update($validated);
+        $uuidOnly->update($request->validated());
 
         return response()->json($uuidOnly);
     }
