@@ -49,3 +49,43 @@ test('factory creates valid records', function () {
     expect($record->uuid)->toBeString();
     expect($record->name)->toBeString();
 });
+
+test('GET /api/combo-table returns all records', function () {
+    ComboTable::factory()->count(3)->create();
+
+    $this->getJson('/api/combo-table')->assertOk()->assertJsonCount(3);
+});
+
+test('POST /api/combo-table creates a record with auto uuid', function () {
+    $response = $this->postJson('/api/combo-table', ['name' => 'Alice']);
+
+    $response->assertCreated()
+        ->assertJsonStructure(['id', 'uuid', 'name'])
+        ->assertJsonPath('name', 'Alice');
+
+    expect($response->json('uuid'))->toMatch('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/');
+});
+
+test('GET /api/combo-table/{uuid} returns a single record', function () {
+    $record = ComboTable::factory()->create();
+
+    $this->getJson("/api/combo-table/{$record->uuid}")
+        ->assertOk()
+        ->assertJsonPath('id', $record->id);
+});
+
+test('PUT /api/combo-table/{uuid} updates a record', function () {
+    $record = ComboTable::factory()->create();
+
+    $this->putJson("/api/combo-table/{$record->uuid}", ['name' => 'Updated'])
+        ->assertOk()
+        ->assertJsonPath('name', 'Updated');
+});
+
+test('DELETE /api/combo-table/{uuid} deletes a record', function () {
+    $record = ComboTable::factory()->create();
+
+    $this->deleteJson("/api/combo-table/{$record->uuid}")->assertNoContent();
+
+    expect(ComboTable::count())->toBe(0);
+});
