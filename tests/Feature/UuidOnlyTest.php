@@ -2,6 +2,7 @@
 
 use App\Models\UuidOnly;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
